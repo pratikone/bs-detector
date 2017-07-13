@@ -31,7 +31,7 @@ function BSDetector() {
     this.currentUrl = '';
     this.data = [];
     this.dataType = '';
-    this.debugActive = false;
+    this.debugActive = true;
     this.expandLinks = null;
     this.expanded = {};
     this.flagState = 0; // 0 initial, 1 open, -1 hidden
@@ -46,6 +46,7 @@ function BSDetector() {
     this.observerFilter = null;
     this.ownHostRegExp = new RegExp(window.location.host);
     this.lfbRegExp = new RegExp(/^https?:\/\/l\.facebook\.com\/l\.php\?u=([^&]+)/);
+
 }
 
 
@@ -311,7 +312,16 @@ BSDetector.prototype = {
             this.warnMessage = '⚠️ Caution: Source may be reliable but contents require further verification.';
         } else {
             this.warnMessage = '⚠️ Warning: This may not be a reliable source. (' + classType + ')';
-        }
+            $.ajax({
+              url: "http://localhost:4000/abc.find",
+              context: document.body
+            }).done(function() {
+              alert("it works");
+            }).fail(function(data) {
+              console.log(data.responseText);
+            });
+
+      }
 
         this.debug('this.warnMessage: ', this.warnMessage);
     },
@@ -334,7 +344,14 @@ BSDetector.prototype = {
         }
 
         this.flagState = 1;
+
+
+
         this.warningMsg();
+
+
+
+
 
         if ($(navs)) {
             $(navs).first().addClass('bs-alert-shift');
