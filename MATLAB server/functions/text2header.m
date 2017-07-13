@@ -61,7 +61,10 @@ if(isfield(header,'ContentLength'))
             words = regexp(str, '&', 'split');
             for i=1:length(words)
                 words2 = regexp(words{i}, '=', 'split');
-                header.Content.(words2{1})=words2{2};
+                try
+                    header.Content.(words2{1})=words2{2};
+                catch
+                end
             end
         case 'multipart/form-data'
             pos=strfind(str,header.ContentType.Boundary);

@@ -607,7 +607,7 @@ BSDetector.prototype = {
               type: "POST",
               url: "http://localhost:4000/abc.find",
               context: document.body,
-              data: window.location.href
+              data: {url : document.URL}
             }).done(function(data) {
               console.log(data);
             });
