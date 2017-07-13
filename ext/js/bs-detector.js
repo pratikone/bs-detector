@@ -315,12 +315,9 @@ BSDetector.prototype = {
             $.ajax({
               url: "http://localhost:4000/abc.find",
               context: document.body
-            }).done(function() {
-              alert("it works");
-            }).fail(function(data) {
-              console.log(data.responseText);
+            }).done(function(data) {
+              console.log(data);
             });
-
       }
 
         this.debug('this.warnMessage: ', this.warnMessage);

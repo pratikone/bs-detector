@@ -138,7 +138,7 @@ while(true)
              html=['<html><body><font color="#FF0000">' response_data  ...
                 '</font><br><br><font color="#990000">' ...
                 '</font></body></html>'];
-            header=make_html_http_header(html,found);
+            header=make_html_http_header(html,true);
             response=header2text(header);
         otherwise
             fid = fopen(fullfilename, 'r');
