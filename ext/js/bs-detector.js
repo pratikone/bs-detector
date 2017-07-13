@@ -312,12 +312,7 @@ BSDetector.prototype = {
             this.warnMessage = '⚠️ Caution: Source may be reliable but contents require further verification.';
         } else {
             this.warnMessage = '⚠️ Warning: This may not be a reliable source. (' + classType + ')';
-            $.ajax({
-              url: "http://localhost:4000/abc.find",
-              context: document.body
-            }).done(function(data) {
-              console.log(data);
-            });
+
       }
 
         this.debug('this.warnMessage: ', this.warnMessage);
@@ -607,7 +602,18 @@ BSDetector.prototype = {
         'use strict';
 
         if (this.firstLoad === true) {
+          console.log("arrived here");
+            $.ajax({
+              type: "POST",
+              url: "http://localhost:4000/abc.find",
+              context: document.body,
+              data: window.location.href
+            }).done(function(data) {
+              console.log(data);
+            });
+
             this.identifySite();
+
 
             if (this.siteId === 'badlink') {
                 this.flagSite();

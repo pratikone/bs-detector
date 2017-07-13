@@ -97,7 +97,11 @@ while(true)
     [pathstr,name,ext] = fileparts(fullfilename);
     
     % Check if file asked by the browser can be opened
-    fid = fopen(fullfilename, 'r');
+    try
+        fid = fopen(fullfilename, 'r');
+    catch
+        fid = -1;
+    end
     if(fid<0)
         filename='/404.html'; found=false;
         fullfilename=[config.www_folder filename]; 
