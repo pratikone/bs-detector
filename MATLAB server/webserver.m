@@ -138,6 +138,8 @@ while(true)
             header=make_image_http_header(html,found);
             response=header2text(header);
          case {'.find'}
+             my_url = request.Content.url;
+             sanitized = extractArticle(my_url);
              response_data = 'This is sent from MATLAB server';
              html=['<html><body><font color="#FF0000">' response_data  ...
                 '</font><br><br><font color="#990000">' ...
