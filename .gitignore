@@ -1,5 +1,6 @@
 
 # Created by https://www.gitignore.io/api/macos,windows,linux,node
+*.mat
 
 ### macOS ###
 *.DS_Store
