@@ -262,10 +262,9 @@ BSDetector.prototype = {
      *
      * @method warningMsg
      */
-    warningMsg: function () {
-
+    warningMsg: function (data) {
         'use strict';
-
+        console.log("coming to print msg " + data);
         var classType = '';
 
         switch (this.dataType) {
@@ -307,11 +306,12 @@ BSDetector.prototype = {
             break;
         }
 
+        classType = data;
 
         if (this.dataType === 'caution') {
             this.warnMessage = '⚠️ Caution: Source may be reliable but contents require further verification.';
         } else {
-            this.warnMessage = '⚠️ Warning: This may not be a reliable source. (' + classType + ')';
+            this.warnMessage = '⚠️ Warning: This may not be a reliable source. (' + classType + ')' + ' : Powered by MATLAB';
 
       }
 
@@ -325,7 +325,7 @@ BSDetector.prototype = {
      *
      * @method flagSite
      */
-    flagSite: function () {
+    flagSite: function (data) {
 
         'use strict';
 
@@ -337,13 +337,7 @@ BSDetector.prototype = {
 
         this.flagState = 1;
 
-
-
-        this.warningMsg();
-
-
-
-
+        this.warningMsg(data);
 
         if ($(navs)) {
             $(navs).first().addClass('bs-alert-shift');
@@ -513,41 +507,41 @@ BSDetector.prototype = {
      * @param {string}
      */
     setAlertOnPosts: function () {
-
-        'use strict';
-
-        bsd.targetLinks();
-
-        $('a[data-is-bs="true"]').each(function () {
-            bsd.dataType = $(this).attr('data-bs-type');
-            bsd.warningMsg();
-
-            bsd.debug('Current warning link: ', this);
-            bsd.debug('bsd.dataType: ', bsd.dataType);
-
-            switch (bsd.siteId) {
-            case 'facebook':
-                if ($(this).parents('._1dwg').length >= 0) {
-                    bsd.flagPost($(this).closest('.mtm'));
-                }
-                if ($(this).parents('.UFICommentContent').length >= 0) {
-                    bsd.flagPost($(this).closest('.UFICommentBody'));
-                }
-                break;
-            case 'twitter':
-                if ($(this).parents('.tweet').length >= 0) {
-                    bsd.flagPost($(this).closest('.js-tweet-text-container'));
-                }
-                break;
-            case 'badlink':
-            case 'none':
-                break;
-            default:
-                break;
-            }
-        });
-
-        this.firstLoad = false;
+        //
+        // 'use strict';
+        //
+        // bsd.targetLinks();
+        //
+        // $('a[data-is-bs="true"]').each(function () {
+        //     bsd.dataType = $(this).attr('data-bs-type');
+        //     bsd.warningMsg();
+        //
+        //     bsd.debug('Current warning link: ', this);
+        //     bsd.debug('bsd.dataType: ', bsd.dataType);
+        //
+        //     switch (bsd.siteId) {
+        //     case 'facebook':
+        //         if ($(this).parents('._1dwg').length >= 0) {
+        //             bsd.flagPost($(this).closest('.mtm'));
+        //         }
+        //         if ($(this).parents('.UFICommentContent').length >= 0) {
+        //             bsd.flagPost($(this).closest('.UFICommentBody'));
+        //         }
+        //         break;
+        //     case 'twitter':
+        //         if ($(this).parents('.tweet').length >= 0) {
+        //             bsd.flagPost($(this).closest('.js-tweet-text-container'));
+        //         }
+        //         break;
+        //     case 'badlink':
+        //     case 'none':
+        //         break;
+        //     default:
+        //         break;
+        //     }
+        // });
+        //
+        // this.firstLoad = false;
     },
 
     /**
@@ -603,6 +597,7 @@ BSDetector.prototype = {
 
         if (this.firstLoad === true) {
           console.log("arrived here");
+          var that = this;
             $.ajax({
               type: "POST",
               url: "http://localhost:4000/abc.find",
@@ -610,40 +605,49 @@ BSDetector.prototype = {
               data: {url : document.URL}
             }).done(function(data) {
               console.log(data);
+              that.identifySite();
+              if (that.siteId === 'badlink') {
+                  that.flagSite(data);
+              }
+
+              that.firstLoad = false;
+              that.no_idea_what_it_is_doing(that);
             });
 
-            this.identifySite();
-
-
-            if (this.siteId === 'badlink') {
-                this.flagSite();
-            }
-
-            this.firstLoad = false;
+        }
+        else{
+          no_idea_what_it_is_doing(this);
         }
 
-        switch (this.siteId) {
+    },
+
+
+    no_idea_what_it_is_doing : function (that) {
+        'use strict';
+
+        switch (that.siteId) {
         case 'facebook':
-            this.observerRoot = $('body');
-            this.observerFilter = [{ element: 'div' }];
+            that.observerRoot = $('body');
+            that.observerFilter = [{ element: 'div' }];
             break;
         case 'twitter':
-            this.observerRoot = $('div#page-container');
-            this.observerFilter = [{ element: 'div' }];
+            that.observerRoot = $('div#page-container');
+            that.observerFilter = [{ element: 'div' }];
             break;
         case 'badSite':
             break;
         case 'none':
         default:
-            this.observerRoot = $('body');
-            this.observerFilter = [{ element: 'div' }];
+            that.observerRoot = $('body');
+            that.observerFilter = [{ element: 'div' }];
             break;
         }
 
-        this.observerExec();
-
+        that.observerExec();
     }
+
 };
+
 
 /**
  * @description Grab data from background and execute extension
@@ -692,23 +696,23 @@ if (window === window.top || url2Domain(window.location.hostname) === 'twitter.c
  * @method chrome.runtime.onMessage.addListener
  * @param {function}
  */
-if (window.top === window) {
-    chrome.runtime.onMessage.addListener(function (message) {
-
-        'use strict';
-
-        switch (message.operation) {
-        case 'flagSite':
-            bsd.dataType = message.type;
-            bsd.flagSite();
-            break;
-        case 'toggleFlag':
-            if (bsd.flagState === 1) {
-                bsd.hideFlag();
-            } else if (bsd.flagState === -1) {
-                bsd.showFlag();
-            }
-            break;
-        }
-    });
-}
+// if (window.top === window) {
+//     chrome.runtime.onMessage.addListener(function (message) {
+//
+//         'use strict';
+//
+//         switch (message.operation) {
+//         case 'flagSite':
+//             bsd.dataType = message.type;
+//             bsd.flagSite();
+//             break;
+//         case 'toggleFlag':
+//             if (bsd.flagState === 1) {
+//                 bsd.hideFlag();
+//             } else if (bsd.flagState === -1) {
+//                 bsd.showFlag();
+//             }
+//             break;
+//         }
+//     });
+// }
