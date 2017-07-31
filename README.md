@@ -1,6 +1,15 @@
-# B.S. 💩 Detector
+# B.S. 💩 Detector, powered by MATLAB
 
 [![GitHub release](https://img.shields.io/github/release/bs-detector/bs-detector.svg)](https://github.com/bs-detector/bs-detector/releases) [![Chrome downloads](https://img.shields.io/chrome-web-store/d/dlcgkekjiopopabcifhebmphmfmdbjod.svg)](https://chrome.google.com/webstore/detail/dlcgkekjiopopabcifhebmphmfmdbjod/) [![Firefox downloads](https://img.shields.io/amo/d/bsdetector.svg)](https://addons.mozilla.org/en-US/firefox/addon/bsdetector/) [![GitHub contributors](https://img.shields.io/github/contributors/bs-detector/bs-detector.svg)](https://github.com/bs-detector/bs-detector/graphs/contributors) [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/bs-detector) [![OpenSources data](https://img.shields.io/badge/Data-OpenSources-blue.svg)](http://opensources.co) [![Twitter Follow](https://img.shields.io/twitter/follow/bsdetectorapp.svg?style=social&label=Follow)](https://twitter.com/bsdetectorapp)
+
+**Fork changes**    
+- Changed backend to talk to a HTTP server running in MATLAB for decision making of fake News
+- The HTTP server passes the site url to MATLAB, which calls python module [newspaper](https://github.com/codelucas/newspaper) to extract article text from the webpage
+- The article text is fed to a neural net trained using Standford's Liar dataset to detect intensity of the words used. It uses MATLAB text analytics and deep learning toolboxes
+- The tags generated from the neural net are `True / Mostly-True / Mostly-False / False` which are returned async to the chrome plugin
+- The plugin displays the banner on top of the webpage with the tags indicating if the news is considered fake or not
+
+## Original README
 
 **We've been nominated for a Golden Kitty from Product Hunt for Chrome Extension of the Year! [Vote here!](https://www.producthunt.com/@goldenkittymeow/collections/2016-chrome-extension-of-the-year)**
 
