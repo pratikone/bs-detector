@@ -2,6 +2,7 @@
 
 [![GitHub release](https://img.shields.io/github/release/bs-detector/bs-detector.svg)](https://github.com/bs-detector/bs-detector/releases) [![Chrome downloads](https://img.shields.io/chrome-web-store/d/dlcgkekjiopopabcifhebmphmfmdbjod.svg)](https://chrome.google.com/webstore/detail/dlcgkekjiopopabcifhebmphmfmdbjod/) [![Firefox downloads](https://img.shields.io/amo/d/bsdetector.svg)](https://addons.mozilla.org/en-US/firefox/addon/bsdetector/) [![GitHub contributors](https://img.shields.io/github/contributors/bs-detector/bs-detector.svg)](https://github.com/bs-detector/bs-detector/graphs/contributors) [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/bs-detector) [![OpenSources data](https://img.shields.io/badge/Data-OpenSources-blue.svg)](http://opensources.co) [![Twitter Follow](https://img.shields.io/twitter/follow/bsdetectorapp.svg?style=social&label=Follow)](https://twitter.com/bsdetectorapp)
 
+### Forked from https://github.com/bs-detector/bs-detector  
 **Fork changes**    
 - Changed backend to talk to a HTTP server running in MATLAB for decision making of fake News
 - The HTTP server passes the site url to MATLAB, which calls python module [newspaper](https://github.com/codelucas/newspaper) to extract article text from the webpage
